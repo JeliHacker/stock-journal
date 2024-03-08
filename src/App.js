@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import './App.css'; // Make sure to import the CSS file for styling
+import excelLogo from './assets/excel_logo.png'; // Adjust the path as necessary
 
 function App() {
+  // Function to handle the download
+  const handleDownload = () => {
+    // Your logic to download the Excel file goes here
+    // For example, assuming you have the file stored in the public folder:
+    window.location.href = `${process.env.PUBLIC_URL}/all_stocks_realbackup.xlsx`;
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* Button with onClick event */}
+      <button onClick={handleDownload}>
+      <img src={excelLogo} alt="Excel Logo" style={{ marginRight: "10px", width: "24px", height: "24px" }} />
+        Download DCF Sheet
+      </button>
     </div>
   );
 }

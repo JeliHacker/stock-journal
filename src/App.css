@@ -1,5 +1,10 @@
 .App {
   text-align: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
 }
 
 .App-logo {
@@ -35,4 +40,28 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+button {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  background-color: #fff;
+  color: #333;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+button:hover {
+  background-color: #333; /* Dark background on hover */
+  color: #fff; /* Light text on hover */
+}
+
+button img {
+  margin-right: 10px;
+  width: 24px;
+  height: 24px;
 }
