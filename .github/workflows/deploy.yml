@@ -33,4 +33,3 @@ jobs:
           ftp-password: ${{ secrets.FTP_PASSWORD }}
           local-dir: build/
           git-ftp-args: --insecure # Remove --insecure if your FTP server supports secure connections
-
