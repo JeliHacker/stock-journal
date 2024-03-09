@@ -57,6 +57,7 @@ button {
   background-color: #fff;
   color: #333;
   transition: background-color 0.4s ease, color 0.4s ease;
+  z-index: 1000;
 }
 
 button:hover {
@@ -90,4 +91,35 @@ button img {
   position: absolute;
   top: 9rem;
   animation: colorFlow 10s ease-in-out infinite;
+}
+
+.table-container {
+  position: absolute;
+  top: 100vh;
+  width: 100%;
+}
+
+table {
+  width: 80%;
+  margin: 0 auto; /* Center the table horizontally */
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  top: 10px;
+  /* padding: 8px; */
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color: #eaeaea;
 }
