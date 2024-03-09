@@ -1,10 +1,14 @@
 .App {
+  display: flex;
+  flex-direction: column;
   text-align: center;
   height: 100vh;
-  display: flex;
   justify-content: center;
   align-items: center;
   background: linear-gradient(to right, #ff7e5f, #feb47b);
+  font-family: "Madimi One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .App-logo {
@@ -64,4 +68,26 @@ button img {
   margin-right: 10px;
   width: 24px;
   height: 24px;
+}
+
+@keyframes colorFlow {
+  0% { color: #007BFF; }
+  25% { color: #28a745; }
+  50% { color: #6f42c1; }
+  75% { color: #28a745; }
+  100% { color: #007BFF; }
+}
+
+.madimi-one-regular {
+  font-family: "Madimi One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.header {
+  font-size: 10rem;
+  color: #111;
+  position: absolute;
+  top: 9rem;
+  animation: colorFlow 10s ease-in-out infinite;
 }

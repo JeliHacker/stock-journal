@@ -12,8 +12,8 @@ function App() {
 
   return (
     <div className="App">
-      {/* Button with onClick event */}
-      <button onClick={handleDownload}>
+      <div className='header madimi-one-regular'>Stock Journal</div>
+      <button className='madimi-one-regular' onClick={handleDownload}>
       <img src={excelLogo} alt="Excel Logo" style={{ marginRight: "10px", width: "24px", height: "24px" }} />
         Download DCF Sheet
       </button>
