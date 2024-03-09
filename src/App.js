@@ -5,10 +5,11 @@ import Papa from 'papaparse';
 
 function App() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false); // Add this line
 
   useEffect(() => {
-    // Fetch the CSV data
-    fetch('all_stocks_realbackup.csv')
+    setLoading(true); // Start loading
+    fetch('all_stocks_realbackup.csv') // Fetch the CSV data
       .then((response) => response.text())
       .then((csvText) => {
         // Parse CSV text into JSON
@@ -17,6 +18,7 @@ function App() {
           skipEmptyLines: true,
         }).data;
         setData(jsonData);
+        setLoading(false); // Data is loaded, we can stop loading
       });
   }, []);
 
@@ -26,6 +28,10 @@ function App() {
     // For example, assuming you have the file stored in the public folder:
     window.location.href = `${process.env.PUBLIC_URL}/all_stocks_realbackup.xlsx`;
   };
+
+  if (loading) {
+    return <div className="App"><h3>Loading...</h3></div>
+  }
 
   return (
     <div className="App">
