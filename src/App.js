@@ -7,15 +7,16 @@ import { useTable, useSortBy } from 'react-table';
 // Define constants for chunk size and initial chunk count
 const CHUNK_SIZE = 50;
 const INITIAL_CHUNK_COUNT = 1;
-const PAGE_SIZE = 50;
+// const PAGE_SIZE = 50;
 
 function App() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false); 
   const [rowsToShow, setRowsToShow] = useState(INITIAL_CHUNK_COUNT * CHUNK_SIZE);
   
-  const [pageCount, setPageCount] = useState(1);
-  const [loadingMore, setLoadingMore] = useState(false);
+  // const [pageCount, setPageCount] = useState(1);
+  // const [loadingMore, setLoadingMore] = useState(false);
+  const loadingMore = false;
 
   useEffect(() => {
     setLoading(true); // Start loading
@@ -39,18 +40,18 @@ function App() {
     window.location.href = `${process.env.PUBLIC_URL}/all_stocks_realbackup.xlsx`;
   };
 
-  const loadMoreData = () => {
-    // Set the loadingMore flag to true to show the loading indicator
-    setLoadingMore(true);
+  // const loadMoreData = () => {
+  //   // Set the loadingMore flag to true to show the loading indicator
+  //   setLoadingMore(true);
     
-    // Use setTimeout to simulate an async call if needed
-    setTimeout(() => {
-      // const newVisibleData = data.slice(0, pageCount * PAGE_SIZE + PAGE_SIZE);
-      // setVisibleData(newVisibleData);
-      setPageCount(pageCount + 1);
-      setLoadingMore(false); // Set loadingMore to false once data is loaded
-    }, 500); // Simulate a network request delay if you like
-  };
+  //   // Use setTimeout to simulate an async call if needed
+  //   setTimeout(() => {
+  //     // const newVisibleData = data.slice(0, pageCount * PAGE_SIZE + PAGE_SIZE);
+  //     // setVisibleData(newVisibleData);
+  //     setPageCount(pageCount + 1);
+  //     setLoadingMore(false); // Set loadingMore to false once data is loaded
+  //   }, 500); // Simulate a network request delay if you like
+  // };
 
   const columns = useMemo(() => {
     if (data.length === 0) {
