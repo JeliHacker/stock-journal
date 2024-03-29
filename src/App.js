@@ -1,11 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './App.css'; 
 import excelLogo from './assets/excel_logo.png'; 
 import Papa from 'papaparse';
+import { useTable, useSortBy } from 'react-table';
+
+// Define constants for chunk size and initial chunk count
+const CHUNK_SIZE = 50;
+const INITIAL_CHUNK_COUNT = 1;
+const PAGE_SIZE = 50;
 
 function App() {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false); // Add this line
+  const [loading, setLoading] = useState(false); 
+  const [rowsToShow, setRowsToShow] = useState(INITIAL_CHUNK_COUNT * CHUNK_SIZE);
+  
+  const [pageCount, setPageCount] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     setLoading(true); // Start loading
@@ -29,6 +39,39 @@ function App() {
     window.location.href = `${process.env.PUBLIC_URL}/all_stocks_realbackup.xlsx`;
   };
 
+  const loadMoreData = () => {
+    // Set the loadingMore flag to true to show the loading indicator
+    setLoadingMore(true);
+    
+    // Use setTimeout to simulate an async call if needed
+    setTimeout(() => {
+      // const newVisibleData = data.slice(0, pageCount * PAGE_SIZE + PAGE_SIZE);
+      // setVisibleData(newVisibleData);
+      setPageCount(pageCount + 1);
+      setLoadingMore(false); // Set loadingMore to false once data is loaded
+    }, 500); // Simulate a network request delay if you like
+  };
+
+  const columns = useMemo(() => {
+    if (data.length === 0) {
+      return [];
+    }
+  
+    return Object.keys(data[0]).map((key) => {
+      return { Header: key, accessor: key };
+    });
+  }, [data]);
+
+  const visibleData = useMemo(() => data.slice(0, 50), [data]);
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = useTable({ columns, data: visibleData }, useSortBy);
+
   if (loading) {
     return <div className="App"><h3>Loading...</h3></div>
   }
@@ -42,20 +85,47 @@ function App() {
         </button>
       
       <div className='table-container'>
-        <table>
+        <table {...getTableProps()}>
           <thead>
-            <tr>
-              {data[0] && Object.keys(data[0]).map((header) => <th key={header}>{header}</th>)}
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((row, index) => (
-              <tr key={index}>
-                {Object.values(row).map((value, index) => <td key={index}>{value}</td>)}
+            {headerGroups.map(headerGroup => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map(column => (
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {column.render('Header')}
+                    <span>
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? ' 🔽'
+                          : ' 🔼'
+                        : ''}
+                    </span>
+                  </th>
+                ))}
               </tr>
             ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map(cell => {
+                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+                  })}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
+
+        {rowsToShow < data.length && (
+          <button onClick={() => setRowsToShow(data.length)}>
+            Load All Rows
+          </button>
+        )}
+
+        {loadingMore && <div className="loading-icon">Loading...</div>}
+        
       </div>
     
     </div>

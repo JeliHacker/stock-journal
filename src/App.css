@@ -123,3 +123,8 @@ tr:nth-child(even) {
 tr:hover {
   background-color: #eaeaea;
 }
+
+.loading-icon {
+  margin-top: 20px; /* Adjust as needed */
+  font-size: large;
+}
