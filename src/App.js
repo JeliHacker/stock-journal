@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './App.css'; 
 import excelLogo from './assets/excel_logo.png'; 
 import Papa from 'papaparse';
@@ -19,7 +19,6 @@ function App() {
  
   // const [pageCount, setPageCount] = useState(1);
   // const [loadingMore, setLoadingMore] = useState(false);
-  const loadingMore = false;
 
   useEffect(() => {
     setLoading(true); // Start loading
@@ -79,7 +78,7 @@ function App() {
       });
   }, [data]);
 
-  const visibleData = useMemo(() => data.slice(0, 50), [data]);
+  // const visibleData = useMemo(() => data.slice(0, 50), [data]);
 
   const filterTypes = useMemo(() => ({
     // Implement custom filter logic

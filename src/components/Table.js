@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTable, useSortBy, useFilters } from 'react-table';
 import debounce from 'lodash.debounce';
-import CustomFilter from './CustomFilter'; // Adjust the path as necessary
+// import CustomFilter from './CustomFilter'; // Adjust the path as necessary
 
 function DebouncedInput({ value, onChange, debounceTimeout = 300, ...props }) {
     const [internalValue, setInternalValue] = useState(value);
@@ -12,9 +12,10 @@ function DebouncedInput({ value, onChange, debounceTimeout = 300, ...props }) {
     }, [value]);
   
     // Call the passed onChange function using debounce
-    const debouncedOnChange = useCallback(
-      debounce(onChange, debounceTimeout),
-      [onChange, debounceTimeout]
+    const debouncedOnChange = useCallback(() => {
+        const handler = debounce(onChange, debounceTimeout);
+  return handler;
+    }, [onChange, debounceTimeout]
     );
   
     const handleChange = (event) => {
@@ -30,8 +31,6 @@ function DebouncedInput({ value, onChange, debounceTimeout = 300, ...props }) {
 function Table({ columns, data, filterTypes, setRowsToShow, rowsToShow, dataLength }) {
     const [businessPredictabilityFilter, setBusinessPredictabilityFilter] = useState("");
 
-    
-    
     const {
         getTableProps,
         getTableBodyProps,
