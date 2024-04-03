@@ -1,8 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import './App.css'; 
 import excelLogo from './assets/excel_logo.png'; 
 import Papa from 'papaparse';
-import { useTable, useSortBy } from 'react-table';
+import CustomFilter from './components/CustomFilter';
+import Table from './components/Table'; // Adjust the import path as necessary
+// import { FaArrowDown } from 'react-icons/fa';
+
 
 // Define constants for chunk size and initial chunk count
 const CHUNK_SIZE = 50;
@@ -13,7 +16,7 @@ function App() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false); 
   const [rowsToShow, setRowsToShow] = useState(INITIAL_CHUNK_COUNT * CHUNK_SIZE);
-  
+ 
   // const [pageCount, setPageCount] = useState(1);
   // const [loadingMore, setLoadingMore] = useState(false);
   const loadingMore = false;
@@ -53,26 +56,56 @@ function App() {
   //   }, 500); // Simulate a network request delay if you like
   // };
 
-  const columns = useMemo(() => {
-    if (data.length === 0) {
+    const columns = useMemo(() => {
+      if (data.length === 0) {
       return [];
-    }
-  
-    return Object.keys(data[0]).map((key) => {
+      }
+
+      return Object.keys(data[0]).map((key) => {
+      // Check if the column is "Business Predictability"
+      if (key === "Business Predictability") {
+          return { 
+          Header: key, 
+          accessor: key,
+          // Specify the filter type
+          filter: "customBusinessPredictabilityFilter",
+          // Optionally, add a filter input in the column header
+          Filter: CustomFilter,
+          };
+      }
+
+      // Return a standard column object for other columns
       return { Header: key, accessor: key };
-    });
+      });
   }, [data]);
 
   const visibleData = useMemo(() => data.slice(0, 50), [data]);
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({ columns, data: visibleData }, useSortBy);
+  const filterTypes = useMemo(() => ({
+    // Implement custom filter logic
+    customFilter: (rows, id, filterValue) => {
+      let operator = filterValue[0];
+      let value = parseFloat(filterValue[1], 10);
+  
+      return rows.filter(row => {
+        let rowValue = parseFloat(row.values[id], 10);
+        switch (operator) {
+          case ">=":
+            return rowValue >= value;
+          case "<=":
+            return rowValue <= value;
+          case "=":
+            return rowValue === value;
+          // Add other cases as needed
+          default:
+            return true;
+        }
+      });
+    },
+  }), []);
+  
 
+  
   if (loading) {
     return <div className="App"><h3>Loading...</h3></div>
   }
@@ -80,54 +113,28 @@ function App() {
   return (
     <div className="App">
         <div className='header madimi-one-regular'>Stock Journal</div>
-        <button className='madimi-one-regular' onClick={handleDownload}>
-        <img src={excelLogo} alt="Excel Logo" style={{ marginRight: "10px", width: "24px", height: "24px" }} />
-          Download DCF Sheet
-        </button>
-      
-      <div className='table-container'>
-        <table {...getTableProps()}>
-          <thead>
-            {headerGroups.map(headerGroup => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map(column => (
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                    {column.render('Header')}
-                    <span>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? ' 🔽'
-                          : ' 🔼'
-                        : ''}
-                    </span>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map(cell => {
-                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-
-        {rowsToShow < data.length && (
-          <button onClick={() => setRowsToShow(data.length)}>
-            Load All Rows
-          </button>
-        )}
-
-        {loadingMore && <div className="loading-icon">Loading...</div>}
         
-      </div>
+          <button className='madimi-one-regular absolute' onClick={handleDownload}>
+            <img src={excelLogo} alt="Excel Logo" style={{ marginRight: "10px", width: "24px", height: "24px" }} />
+              Download DCF Sheet
+          </button>
+
+          <div class="scroll-down text-4xl mt-72">
+            Scroll down to explore stocks!
+            <br />
+            <svg className="inline ml-2 w-24 h-24" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </div>
+      
+        <Table 
+          columns={columns} 
+          data={data.slice(0, rowsToShow)}
+          filterTypes={filterTypes}
+          setRowsToShow={setRowsToShow}
+          rowsToShow={rowsToShow}
+          dataLength={data.length}
+        />
     
     </div>
   );
