@@ -111,7 +111,7 @@ function App() {
 
   return (
     <div className="App">
-        <div className='header madimi-one-regular'>Stock Journal</div>
+        <div className='header madimi-one-regular'>Stock Pitcher</div>        
         
           <button className='madimi-one-regular absolute' onClick={handleDownload}>
             <img src={excelLogo} alt="Excel Logo" style={{ marginRight: "10px", width: "24px", height: "24px" }} />
