@@ -111,7 +111,7 @@ function App() {
 
   return (
     <div className="App">
-      <div className='header madimi-one-regular hidden sm:block'>Stock Pitcher!</div>        
+      <div className='header madimi-one-regular hidden md:block'>Stock Pitcher</div>        
       
       <button className='madimi-one-regular absolute' onClick={handleDownload}>
         <img src={excelLogo} alt="Excel Logo" style={{ marginRight: "10px", width: "24px", height: "24px" }} />
@@ -119,7 +119,7 @@ function App() {
       </button>
 
       <div class="scroll-down text-4xl mt-72">
-        <span class="hidden sm:block" >Scroll down to explore stocks!</span>
+        <span class="hidden md:block" >Scroll down to explore stocks!</span>
         <br />
         <svg className="inline ml-2 w-24 h-24" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
