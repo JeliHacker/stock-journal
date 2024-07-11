@@ -97,9 +97,11 @@ function Table({ columns, data, filterTypes, setRowsToShow, rowsToShow, dataLeng
       </table>
 
       {rowsToShow < dataLength && (
-        <button onClick={() => setRowsToShow(dataLength)}>
+        <div>
+        <button className="" onClick={() => setRowsToShow(dataLength)}>
           Load All Rows
         </button>
+        </div>
       )}
     </div>
   );
