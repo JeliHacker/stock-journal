@@ -50,19 +50,19 @@ function Table({ columns, data, filterTypes, setRowsToShow, rowsToShow, dataLeng
 
   return (
     <div className='table-container'>
-        <div>
-          <DebouncedInput
-            value={businessPredictabilityFilter}
-            onChange={(value) => {
-              setBusinessPredictabilityFilter(value);
-              setFilter('Business Predictability', parseFloat(value) || undefined);
-            }}
-            placeholder="Filter Business Predictability"
-            debounceTimeout={300}
-            style={{ marginBottom: '10px' }}
-            type="number"
-          />
-        </div>
+      <div>
+        <DebouncedInput
+          value={businessPredictabilityFilter}
+          onChange={(value) => {
+            setBusinessPredictabilityFilter(value);
+            setFilter('Business Predictability', parseFloat(value) || undefined);
+          }}
+          placeholder="Filter Business Predictability"
+          debounceTimeout={300}
+          style={{ marginBottom: '10px' }}
+          type="number"
+        />
+      </div>
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
@@ -97,8 +97,8 @@ function Table({ columns, data, filterTypes, setRowsToShow, rowsToShow, dataLeng
       </table>
 
       {rowsToShow < dataLength && (
-        <div>
-        <button className="" onClick={() => setRowsToShow(dataLength)}>
+        <div className='flex justify-center my-4'>          
+        <button style={{background: 'linear-gradient(to right, #ff7e5f, #feb47b)'}} onClick={() => setRowsToShow(dataLength)}>
           Load All Rows
         </button>
         </div>
