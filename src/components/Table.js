@@ -98,7 +98,7 @@ function Table({ columns, data, filterTypes, setRowsToShow, rowsToShow, dataLeng
 
       {rowsToShow < dataLength && (
         <div className='flex justify-center my-4'>          
-        <button style={{background: 'linear-gradient(to right, #ff7e5f, #feb47b)'}} onClick={() => setRowsToShow(dataLength)}>
+        <button id="loadMore" style={{background: 'linear-gradient(to right, #ff7e5f, #feb47b)', color: '#000'}} onClick={() => setRowsToShow(dataLength)}>
           Load All Rows
         </button>
         </div>

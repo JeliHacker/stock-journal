@@ -69,6 +69,10 @@ button:hover {
   color: #fff; /* Light text on hover */
 }
 
+#loadMore:hover {
+  color: #fff !important;
+}
+
 button img {
   margin-right: 10px;
   width: 24px;
