@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import './App.css'; 
-import excelLogo from './assets/excel_logo.png'; 
+import './App.css';
+import excelLogo from './assets/excel_logo.png';
 import Papa from 'papaparse';
 import CustomFilter from './components/CustomFilter';
 import Table from './components/Table'; // Adjust the import path as necessary
@@ -10,13 +10,12 @@ import Table from './components/Table'; // Adjust the import path as necessary
 // Define constants for chunk size and initial chunk count
 const CHUNK_SIZE = 50;
 const INITIAL_CHUNK_COUNT = 1;
-// const PAGE_SIZE = 50;
 
 function App() {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const [rowsToShow, setRowsToShow] = useState(INITIAL_CHUNK_COUNT * CHUNK_SIZE);
- 
+
   // const [pageCount, setPageCount] = useState(1);
   // const [loadingMore, setLoadingMore] = useState(false);
 
@@ -45,7 +44,7 @@ function App() {
   // const loadMoreData = () => {
   //   // Set the loadingMore flag to true to show the loading indicator
   //   setLoadingMore(true);
-    
+
   //   // Use setTimeout to simulate an async call if needed
   //   setTimeout(() => {
   //     // const newVisibleData = data.slice(0, pageCount * PAGE_SIZE + PAGE_SIZE);
@@ -55,27 +54,45 @@ function App() {
   //   }, 500); // Simulate a network request delay if you like
   // };
 
-    const columns = useMemo(() => {
-      if (data.length === 0) {
+  const columns = useMemo(() => {
+    if (data.length === 0) {
       return [];
-      }
+    }
 
-      return Object.keys(data[0]).map((key) => {
+    return Object.keys(data[0]).map((key) => {
       // Check if the column is "Business Predictability"
       if (key === "Business Predictability") {
-          return { 
-          Header: key, 
+        return {
+          Header: key,
           accessor: key,
           // Specify the filter type
           filter: "customBusinessPredictabilityFilter",
           // Optionally, add a filter input in the column header
           Filter: CustomFilter,
-          };
+        };
+      }
+
+      // Check if the column is "Ticker"
+      if (key === "Symbol") { // Replace "Ticker" with your actual ticker key if different
+        return {
+          Header: key,
+          accessor: key,
+          Cell: ({ value }) => (
+            <a
+              href={`https://dcfteacher.com/browse/${value.toLowerCase()}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: '#1a0dab', textDecoration: 'none' }} // Optional styling
+            >
+              {value.toUpperCase()}
+            </a>
+          ),
+        };
       }
 
       // Return a standard column object for other columns
       return { Header: key, accessor: key };
-      });
+    });
   }, [data]);
 
   // const visibleData = useMemo(() => data.slice(0, 50), [data]);
@@ -85,7 +102,7 @@ function App() {
     customFilter: (rows, id, filterValue) => {
       let operator = filterValue[0];
       let value = parseFloat(filterValue[1], 10);
-  
+
       return rows.filter(row => {
         let rowValue = parseFloat(row.values[id], 10);
         switch (operator) {
@@ -102,20 +119,20 @@ function App() {
       });
     },
   }), []);
-  
 
-  
+
+
   if (loading) {
     return <div className="App"><h3>Loading...</h3></div>
   }
 
   return (
     <div className="App">
-      <div className='header madimi-one-regular hidden md:block'>Stock Pitcher</div>        
-      
-      <button className='madimi-one-regular absolute' onClick={handleDownload}>
+      <div className='header madimi-one-regular hidden md:block'>Stock Pitcher</div>
+
+      <button className='madimi-one-regular absolute button' onClick={handleDownload}>
         <img src={excelLogo} alt="Excel Logo" style={{ marginRight: "10px", width: "24px", height: "24px" }} />
-          Download DCF Sheet
+        Download DCF Sheet
       </button>
 
       <div class="scroll-down text-4xl mt-72">
@@ -125,16 +142,16 @@ function App() {
           <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
         </svg>
       </div>
-    
-      <Table 
-        columns={columns} 
+
+      <Table
+        columns={columns}
         data={data.slice(0, rowsToShow)}
         filterTypes={filterTypes}
         setRowsToShow={setRowsToShow}
         rowsToShow={rowsToShow}
         dataLength={data.length}
       />
-    
+
     </div>
   );
 }
