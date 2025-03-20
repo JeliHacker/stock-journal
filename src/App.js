@@ -21,7 +21,7 @@ function App() {
 
   useEffect(() => {
     setLoading(true); // Start loading
-    fetch('all_stocks_realbackup.csv') // Fetch the CSV data
+    fetch('all_stocks_data.csv') // Fetch the CSV data
       .then((response) => response.text())
       .then((csvText) => {
         // Parse CSV text into JSON
@@ -38,7 +38,7 @@ function App() {
   const handleDownload = () => {
     // Your logic to download the Excel file goes here
     // For example, assuming you have the file stored in the public folder:
-    window.location.href = `${process.env.PUBLIC_URL}/all_stocks_realbackup.xlsx`;
+    window.location.href = `${process.env.PUBLIC_URL}/all_stocks_data.xlsx`;
   };
 
   // const loadMoreData = () => {
@@ -135,7 +135,11 @@ function App() {
         Download DCF Sheet
       </button>
 
-      <div class="scroll-down text-4xl mt-72">
+      <div class="scroll-down text-xl absolute mt-24">
+        <span class="hidden md:block" >Last Updated: 3/19/2025</span>
+      </div>
+
+      <div class="scroll-down text-4xl mt-96">
         <span class="hidden md:block" >Scroll down to explore stocks!</span>
         <br />
         <svg className="inline ml-2 w-24 h-24" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
